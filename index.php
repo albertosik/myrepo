@@ -8,7 +8,9 @@ and open the template in the editor.
     <head>
         <meta charset="UTF-8">
         <title></title>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script src="script.js"></script>
         <link href="style.css" rel="stylesheet">
     </head>
@@ -50,7 +52,7 @@ if ($client->getAccessToken()) {
 <?php
   foreach($calList['items'] as $calendar)
   {
-      echo '<li><a class="calendar" id="'.urlencode($calendar['id']).'">'.$calendar['summary'].'</a></li>';    
+      echo '<li class="calendar" id="'.urlencode($calendar['id']).'">'.$calendar['summary'].'<span class="ui-icon ui-icon-pencil" style="float:right"></span></li>';    
   }
 ?>
 </ul>
