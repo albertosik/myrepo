@@ -52,7 +52,7 @@ if ($client->getAccessToken()) {
 <?php
   foreach($calList['items'] as $calendar)
   {
-      echo '<li class="calendar" id="'.urlencode($calendar['id']).'">'.$calendar['summary'].'<span class="ui-icon ui-icon-pencil" style="float:right"></span></li>';    
+      echo '<li class="calendar" id="'.urlencode($calendar['id']).'"><span>'.$calendar['summary'].'</span><span class="ui-icon ui-icon-pencil edit" style="float:right; display:none"></span></li>';    
   }
 ?>
 </ul>

@@ -14,4 +14,17 @@ $(function(){
             }
         });
     });
+    $('li').mouseover(function(){
+        $(this).find('.edit').css('display','inline');
+    });
+    $('li').mouseout(function(){
+        $(this).find('.edit').css('display','none');
+    });
+    $('.edit').click(function(){
+        var calName = $(this).prev('span');
+        var value = calName.html();
+        if($(this).prev().find('input').length==1)
+            value = $(this).prev().find('input').val();
+        calName.html('<input type="text" value="'+value+'">');
+    });
 });
