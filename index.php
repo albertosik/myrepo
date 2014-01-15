@@ -45,6 +45,16 @@ if (isset($_SESSION['token'])) {
 }
 
 if ($client->getAccessToken()) {
+    if(isset($_GET['cmd']) && $_GET['cmd']=='updateCalendarName')
+    {
+        $calendar = $cal->calendars->get(urldecode($_GET['id']));
+        var_dump($calendar);
+        $calendar['summary'] = $_GET['name'];
+
+        $updatedCalendar = $cal->calendars->update($_GET['id'], $calendar);
+
+        echo $updatedCalendar->getEtag();
+    }
   $calList = $cal->calendarList->listCalendarList();
 ?>
 <div id="calendarList"> 
@@ -52,7 +62,7 @@ if ($client->getAccessToken()) {
 <?php
   foreach($calList['items'] as $calendar)
   {
-      echo '<li class="calendar" id="'.urlencode($calendar['id']).'"><span>'.$calendar['summary'].'</span><span class="ui-icon ui-icon-pencil edit" style="float:right; display:none"></span></li>';    
+      echo '<li class="calendar" id="'.urlencode($calendar['id']).'"><span class="name">'.$calendar['summary'].'</span><span title="Переименовать" class="ui-icon ui-icon-pencil"></span></li>';    
   }
 ?>
 </ul>

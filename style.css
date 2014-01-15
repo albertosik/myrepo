@@ -24,6 +24,7 @@ div{
     font-size: 15px;
     font-family: tahoma;
     cursor: pointer;
+    line-height: 2.5em;
 }
 #items li:hover{
     background-color: #000099;
@@ -32,7 +33,26 @@ div{
 .calendar{
     
 }
-span.edit{
+
+span.ui-icon{
     background-color: #fff;
     border-radius: 3px;
+    margin-top: 10px;
+}
+
+span.ui-icon:hover{
+    background-color: #ccffcc;
+}
+span.ui-icon-pencil{
+    float: right;
+    display: none;
+}
+
+span.ui-icon-check{
+    display: inline-block;
+    margin-right: 2px
+}
+
+span.ui-icon-close{
+    display: inline-block;
 }

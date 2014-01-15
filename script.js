@@ -5,7 +5,7 @@ $(function(){
         maxResults:5,
         fields:'items(description,end,id,start,summary),nextPageToken'},function(data){
             var events = data.items;
-            console.log(events);
+            //console.log(events);
             $('#eventList').empty();
             for(var i=0; i<events.length; i++)
             {
@@ -15,16 +15,29 @@ $(function(){
         });
     });
     $('li').mouseover(function(){
-        $(this).find('.edit').css('display','inline');
+        $(this).find('.ui-icon-pencil').css('display','inline');
     });
     $('li').mouseout(function(){
-        $(this).find('.edit').css('display','none');
+        $(this).find('.ui-icon-pencil').css('display','none');
     });
-    $('.edit').click(function(){
+    var value = '';
+    $('.ui-icon-pencil').click(function(){
         var calName = $(this).prev('span');
-        var value = calName.html();
+        value = calName.html();
         if($(this).prev().find('input').length==1)
             value = $(this).prev().find('input').val();
-        calName.html('<input type="text" value="'+value+'">');
+        calName.html('<input style="width:300px; float:left; margin:6px" type="text" value="'+value+'"><span class="ui-icon ui-icon-check"></span><span class="ui-icon ui-icon-close"></span>');
+    });
+    
+    $('body').on('click', '.ui-icon-close', function(){
+        $(this).parent().html(value);
+
+    });
+    $('body').on('click', '.ui-icon-check', function(){
+        var newName = $(this).prev().val();
+        var button = $(this);
+        $.get('index.php', {cmd:'updateCalendarName', name:newName, id:button.parent().parent().attr('id')},function(){
+            button.parent().html(newName);
+        });
     });
 });
