@@ -5,13 +5,31 @@ $(function(){
         maxResults:5,
         fields:'items(description,end,id,start,summary),nextPageToken'},function(data){
             var events = data.items;
-            //console.log(events);
             $('#eventList').empty();
             for(var i=0; i<events.length; i++)
             {
-                $('#eventList').append('<h3>'+events[i].summary+' '+events[i].id+'</h3><h4><em>Start: </em>'+events[i].start.date+'</h4><h4><em>End: </em>'+events[i].end.date+'</h4><p>'+events[i].description.replace(/\n/g, '<br>')+'</p>');
+                if(events[i].start.dateTime && events[i].end.dateTime)
+                {
+                    var start = new Date(events[i].start.dateTime);
+                    var end = new Date(events[i].end.dateTime);
+                    start = start.toLocaleString();
+                    end = end.toLocaleString();
+                    
+                }
+                else if(events[i].start.date && events[i].end.date)
+                {
+                    var start = new Date(events[i].start.date);
+                    var end = new Date(events[i].end.date);
+                    start = start.toLocaleDateString();
+                    end = end.toLocaleDateString();
+                }
+                
+
+                $('#eventList').append('<h3>'+events[i].summary+' '+events[i].id+'</h3><h4><em>Start: </em>'+start+'</h4><h4><em>End: </em>'+end+'</h4><p>'+events[i].description.replace(/\n/g, '<br>')+'</p>');
                 
             }
+        }).fail(function(){
+            $('#eventList').empty().append('<p>Этот календарь не является публичным или не существует</p>');
         });
     });
     $('li').mouseover(function(){

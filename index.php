@@ -22,6 +22,7 @@ session_start();
 
 $client = new Google_Client();
 $client->setApplicationName("Google Calendar PHP Starter Application");
+$client->setUseObjects(TRUE);
 
 // Visit https://code.google.com/apis/console?api=calendar to generate your
 // client id, client secret, and to register your redirect uri.
@@ -48,10 +49,10 @@ if ($client->getAccessToken()) {
     if(isset($_GET['cmd']) && $_GET['cmd']=='updateCalendarName')
     {
         $calendar = $cal->calendars->get(urldecode($_GET['id']));
-        var_dump($calendar);
-        $calendar['summary'] = $_GET['name'];
 
-        $updatedCalendar = $cal->calendars->update($_GET['id'], $calendar);
+        $calendar->setSummary($_GET['name']);
+        
+        $updatedCalendar = $cal->calendars->update(urldecode($_GET['id']), $calendar);
 
         echo $updatedCalendar->getEtag();
     }
@@ -60,9 +61,22 @@ if ($client->getAccessToken()) {
 <div id="calendarList"> 
 <ul id="items">
 <?php
-  foreach($calList['items'] as $calendar)
+  foreach($calList->getItems() as $calendar)
   {
-      echo '<li class="calendar" id="'.urlencode($calendar['id']).'"><span class="name">'.$calendar['summary'].'</span><span title="Переименовать" class="ui-icon ui-icon-pencil"></span></li>';    
+      $acl = $cal->acl->listAcl($calendar->getId());
+      foreach ($acl->getItems() as $rule)
+      {
+          if($rule->getRole()=='owner')
+              $access = true;
+          else
+              $access = false;
+      }
+      if($access)
+          echo '<li class="calendar" id="'.urlencode($calendar->getId()).'"><span class="name">'.$calendar->getSummary().'</span><span title="Переименовать" class="ui-icon ui-icon-pencil"></span></li>';    
+      else 
+          echo '<li class="calendar" id="'.urlencode($calendar->getId()).'"><span class="name">'.$calendar->getSummary().'</span></li>';    
+        
+    
   }
 ?>
 </ul>
